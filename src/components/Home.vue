@@ -6,9 +6,6 @@
 
 export default {
   methods: {},
-  created() {
-    this.teste();
-  },
 };
 </script>
 

@@ -7,7 +7,7 @@
     <v-app-bar v-if="userLogged" app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Multimagem R.A</v-toolbar-title>
+      <v-toolbar-title>PJC-MT - Frontend</v-toolbar-title>
     </v-app-bar>
     <Content />
   </v-app>
@@ -25,10 +25,14 @@ export default {
   },
   data() {
     return {
-      drawer: true,
+      drawer: this.userLogged ? true : false,
     };
   },
-  methods: {},
+  methods: {
+    verifyUserLogged() {
+      if (!this.userLogged) this.$router.push("/login");
+    },
+  },
   computed: {
     ...mapState("user", {
       userData: (state) => state.data,
@@ -41,6 +45,9 @@ export default {
 
       return user;
     },
+  },
+  created() {
+    this.verifyUserLogged();
   },
 };
 </script>
