@@ -59,10 +59,18 @@ export default {
           text: "Página inicial",
           children: [],
           data: {
-            route: "home",
+            route: "Home",
             icon: "mdi-home",
-            class: "tree-label",
-            customClass: "menu-home",
+            isVisible: true,
+            expanded: false,
+          },
+        },
+        {
+          text: "Álbuns",
+          children: [],
+          data: {
+            route: "Albums",
+            icon: "mdi-bookmark-music",
             isVisible: true,
             expanded: false,
           },
