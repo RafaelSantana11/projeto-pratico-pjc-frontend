@@ -7,7 +7,7 @@
         >
 
         <v-spacer></v-spacer>
-        <v-btn small rounded color="success" @click="openInsertScreen">
+        <v-btn small color="success" @click="openInsertScreen">
           Cadastrar novo <v-icon right dark> mdi-plus </v-icon></v-btn
         >
       </v-toolbar>
@@ -46,6 +46,10 @@
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
+            <v-btn icon title="Detalhes">
+              <v-icon> mdi-eye </v-icon>
+            </v-btn>
+
             <v-btn icon title="Editar" @click="openUpdateScreen(item.id)">
               <v-icon> mdi-pencil </v-icon>
             </v-btn>
@@ -87,12 +91,14 @@ export default {
         { text: "ID", value: "id" },
         { text: "Nome", value: "name" },
         { text: "Artista", value: "artistName" },
+        { text: "Publicado em", value: "publication_year" },
         { text: "Ações", value: "actions", sortable: false },
       ],
       items: [],
       filters: {
         name: null,
         artistName: null,
+        currentPage: 1,
       },
     };
   },
@@ -114,6 +120,10 @@ export default {
 
         console.log(response.data);
 
+        this.totalRows = response.data.count ? response.data.count : 0;
+
+        this.setResponseData(response.data.rows);
+
         this.loading = false;
       } catch (error) {
         this.loading = false;
@@ -126,6 +136,18 @@ export default {
         });
       }
     },
+    setResponseData(data) {
+      const copyOfData = [...data];
+
+      this.items = copyOfData.map((item) => {
+        item.artistName = item.Artist.name;
+
+        return item;
+      });
+
+      this.loading = false;
+    },
+
     clearFilters() {},
     openInsertScreen() {},
     deleteAlbum() {},
