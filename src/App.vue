@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" app dark color="primary">
       <Menu v-if="userData" />
     </v-navigation-drawer>
 
@@ -55,7 +55,7 @@ export default {
   computed: {
     ...mapState("user", {
       userData: (state) => state.data,
-    })
+    }),
   },
   mounted() {
     this.$root.$confirm = this.$refs.confirmDialog.open;

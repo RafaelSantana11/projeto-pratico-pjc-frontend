@@ -7,7 +7,7 @@
         >
 
         <v-spacer></v-spacer>
-        <v-btn small color="success" @click="openInsertScreen">
+        <v-btn small text @click="openInsertScreen">
           Cadastrar novo <v-icon right dark> mdi-plus </v-icon></v-btn
         >
       </v-toolbar>
@@ -32,7 +32,7 @@
                     </v-row>
 
                     <div class="d-flex justify-end align-center flex-wrap">
-                      <v-btn color="success" class="mr-2" @click="loadAlbuns">
+                      <v-btn color="primary" class="mr-2" @click="loadAlbuns">
                         <v-icon left>mdi-filter</v-icon> Filtrar</v-btn
                       >
                       <v-btn @click="clearFilters"
@@ -63,6 +63,7 @@
     </v-card>
     <div class="text-center mt-2">
       <v-pagination
+        circle
         v-model="filters.currentPage"
         :length="numberOfPages"
         @input="loadAlbuns"
