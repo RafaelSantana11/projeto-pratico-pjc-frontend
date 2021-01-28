@@ -10,6 +10,8 @@
       <v-toolbar-title>PJC-MT - Frontend</v-toolbar-title>
     </v-app-bar>
     <Content />
+    <ConfirmDialog ref="confirmDialog"></ConfirmDialog>
+    <ErrorDialog ref="errorDialog"></ErrorDialog>
   </v-app>
 </template>
 
@@ -18,10 +20,15 @@ import Content from "@/components/template/Content";
 import Menu from "@/components/template/Menu";
 import { mapState } from "vuex";
 
+import ConfirmDialog from "@/components/template/ConfirmDialog";
+import ErrorDialog from "@/components/template/ErrorDialog";
+
 export default {
   components: {
     Content,
     Menu,
+    ConfirmDialog,
+    ErrorDialog,
   },
   data() {
     return {
@@ -45,6 +52,10 @@ export default {
 
       return user;
     },
+  },
+  mounted() {
+    this.$root.$confirm = this.$refs.confirmDialog.open;
+    this.$root.$errorDialog = this.$refs.errorDialog.open;
   },
   created() {
     this.verifyUserLogged();

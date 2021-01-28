@@ -68,6 +68,10 @@
 </template>
 
 <script>
+// import axios from "axios";
+// import { baseApiUrl } from "@/global";
+import errorHandler from "@/helpers/error_handler";
+
 export default {
   computed: {
     numberOfPages() {
@@ -92,9 +96,25 @@ export default {
     };
   },
   methods: {
-    loadAlbuns() {},
+    async loadAlbuns() {
+      try {
+        this.loading = true;
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
     clearFilters() {},
     openInsertScreen() {},
+    deleteAlbum() {},
   },
 };
 </script>
