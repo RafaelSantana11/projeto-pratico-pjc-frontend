@@ -68,8 +68,8 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import { baseApiUrl } from "@/global";
+import axios from "axios";
+import { baseApiUrl } from "@/global";
 import errorHandler from "@/helpers/error_handler";
 
 export default {
@@ -91,14 +91,28 @@ export default {
       ],
       items: [],
       filters: {
-        currentPage: 1,
+        name: null,
+        artistName: null,
       },
     };
   },
   methods: {
-    async loadAlbuns() {
+    async loadAlbuns(page) {
       try {
         this.loading = true;
+
+        let currentPage = page ? page : 1;
+
+        const params = {
+          currentPage: currentPage,
+          ...this.filters,
+        };
+
+        let url = `${baseApiUrl}/albums`;
+
+        const response = await axios.get(url, { params });
+
+        console.log(response.data);
 
         this.loading = false;
       } catch (error) {
@@ -115,6 +129,9 @@ export default {
     clearFilters() {},
     openInsertScreen() {},
     deleteAlbum() {},
+  },
+  created() {
+    this.loadAlbuns();
   },
 };
 </script>
