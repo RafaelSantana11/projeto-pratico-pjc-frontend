@@ -2,13 +2,13 @@
   <v-list>
     <v-list-item class="px-2">
       <v-list-item-avatar>
-        <Gravatar email="user@email.com.br" alt="user" />
+        <Gravatar :email="userData.email" alt="user" />
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-title> Nome do usuário </v-list-item-title>
+        <v-list-item-title> {{ userData.name }} </v-list-item-title>
       </v-list-item-content>
       <v-list-item-action>
-        <v-btn small icon>
+        <v-btn small title="Sair" @click="logout" icon>
           <v-icon>mdi-logout-variant</v-icon>
         </v-btn>
       </v-list-item-action>
@@ -48,9 +48,17 @@
 
 <script>
 import Gravatar from "vue-gravatar";
+import { mapActions, mapState } from "vuex";
+import { userKey } from "@/global";
+
 export default {
   components: {
     Gravatar,
+  },
+  computed: {
+    ...mapState("user", {
+      userData: (state) => state.data,
+    }),
   },
   data() {
     return {
@@ -79,6 +87,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("user", ["setUserData"]),
     onNodeSelect(node) {
       if (node.data.route) {
         this.$router.push({
@@ -86,6 +95,11 @@ export default {
           params: node.data,
         });
       }
+    },
+    logout() {
+      this.setUserData(null);
+      localStorage.removeItem(userKey);
+      window.location = "/";
     },
   },
 };

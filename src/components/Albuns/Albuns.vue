@@ -28,7 +28,21 @@
                 <v-expansion-panel-content>
                   <v-container fluid>
                     <v-row>
-                      <v-col></v-col>
+                      <v-col>
+                        <v-text-field
+                          label="Buscar por álbum"
+                          v-model="filters.name"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          label="Buscar por cantor"
+                          v-model="filters.artistName"
+                        ></v-text-field>
+                      </v-col>
                     </v-row>
 
                     <div class="d-flex justify-end align-center flex-wrap">
@@ -119,8 +133,6 @@ export default {
 
         const response = await axios.get(url, { params });
 
-        console.log(response.data);
-
         this.totalRows = response.data.count ? response.data.count : 0;
 
         this.setResponseData(response.data.rows);
@@ -148,8 +160,15 @@ export default {
 
       this.loading = false;
     },
+    clearFilters() {
+      this.filters = {
+        name: null,
+        artistName: null,
+        currentPage: 1,
+      },
 
-    clearFilters() {},
+      this.loadAlbuns();
+    },
     openInsertScreen() {},
     deleteAlbum() {},
   },
