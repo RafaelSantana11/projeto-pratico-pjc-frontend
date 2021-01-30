@@ -74,7 +74,7 @@ export default {
           },
         },
         {
-          text: "Álbuns",
+          text: "Álbuns/Artistas",
           children: [],
           data: {
             route: "Albums",

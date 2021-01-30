@@ -60,15 +60,19 @@
           </template>
 
           <template v-slot:[`item.actions`]="{ item }">
-            <v-btn icon title="Detalhes">
-              <v-icon> mdi-eye </v-icon>
+            <v-btn
+              icon
+              title="Ver dados do artista"
+              @click="findArtistData(item.ArtistId)"
+            >
+              <v-icon> mdi-account-star </v-icon>
             </v-btn>
 
-            <v-btn icon title="Editar" @click="openUpdateScreen(item.id)">
+            <v-btn icon title="Editar album" @click="openUpdateScreen(item.id)">
               <v-icon> mdi-pencil </v-icon>
             </v-btn>
 
-            <v-btn icon title="Excluir" @click="deleteAlbum(item.id)">
+            <v-btn icon title="Excluir album" @click="deleteAlbum(item.id)">
               <v-icon> mdi-delete </v-icon>
             </v-btn>
           </template>
@@ -83,6 +87,13 @@
         @input="loadAlbuns"
       ></v-pagination>
     </div>
+
+    <v-dialog v-model="artistDetailsDialog" max-width="500">
+      <ArtistDetails
+        @close-dialog="artistDetailsDialog = false"
+        :artist="artist"
+      />
+    </v-dialog>
   </div>
 </template>
 
@@ -91,17 +102,21 @@ import axios from "axios";
 import { baseApiUrl } from "@/global";
 import errorHandler from "@/helpers/error_handler";
 
+import ArtistDetails from "../Artists/ArtistDetails";
+
 export default {
   computed: {
     numberOfPages() {
       return Math.ceil(this.totalRows / this.resultsPerPage);
     },
   },
+  components: { ArtistDetails },
   data() {
     return {
       resultsPerPage: 5,
       totalRows: 0,
       loading: false,
+      artistDetailsDialog: false,
       headers: [
         { text: "ID", value: "id" },
         { text: "Nome", value: "name" },
@@ -109,6 +124,7 @@ export default {
         { text: "Publicado em", value: "publicationYear" },
         { text: "Ações", value: "actions", sortable: false },
       ],
+      artist: {},
       items: [],
       filters: {
         name: null,
@@ -160,14 +176,37 @@ export default {
 
       this.loading = false;
     },
+    async findArtistData(artistId) {
+      try {
+        this.loading = true;
+
+        let url = `${baseApiUrl}/artists/${artistId}`;
+
+        const response = await axios.get(url);
+
+        this.artist = { ...response.data };
+
+        this.artistDetailsDialog = true;
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
     clearFilters() {
-      this.filters = {
+      (this.filters = {
         name: null,
         artistName: null,
         currentPage: 1,
-      },
-
-      this.loadAlbuns();
+      }),
+        this.loadAlbuns();
     },
     openInsertScreen() {
       this.$router.push("/albuns/cadastrar");
