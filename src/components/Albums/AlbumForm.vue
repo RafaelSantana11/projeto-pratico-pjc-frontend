@@ -1,7 +1,7 @@
 <template>
   <v-card :loading="loading" :disabled="loading">
     <v-toolbar flat>
-      <v-app-bar-nav-icon v-if="!dialog"
+      <v-app-bar-nav-icon
         ><v-btn title="voltar" icon @click="$router.go(-1)"
           ><v-icon>mdi-keyboard-backspace</v-icon></v-btn
         ></v-app-bar-nav-icon
@@ -50,7 +50,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
 
-      <v-btn class="success darken-1">
+      <v-btn class="success darken-1" @click="save">
         <v-icon left>mdi-content-save</v-icon> Salvar</v-btn
       >
     </v-card-actions>
@@ -85,6 +85,51 @@ export default {
     };
   },
   methods: {
+    save() {
+      const errors = this.validateForm();
+
+      if (errors.length) {
+        this.$root.$errorDialog(errors, {
+          width: "800",
+          color: "primary",
+        });
+      } else {
+        this[this.mode](); //chama a função de insert ou update conforme a propriedade mode
+      }
+    },
+    async insert() {
+      try {
+        this.loading = true;
+
+        await axios.post(`${baseApiUrl}/albums`, this.form);
+
+        this.form = {}; //limpa o formulário
+        this.$router.go(-1); //redireciona para a página anterior
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
+    validateForm() {
+      const errors = [];
+
+      if (!this.form.publicationYear)
+        errors.push("Ano de publicação obrigatório!");
+
+      if (!this.form.name) errors.push("Nome do album obrigatório!");
+
+      if (!this.form.ArtistId) errors.push("Campo Artista obrigatório!");
+
+      return errors;
+    },
     setArtistsData(data) {
       this.artistsOptions = data.map((d) => {
         return {

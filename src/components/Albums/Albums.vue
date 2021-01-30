@@ -106,7 +106,7 @@ export default {
         { text: "ID", value: "id" },
         { text: "Nome", value: "name" },
         { text: "Artista", value: "artistName" },
-        { text: "Publicado em", value: "publication_year" },
+        { text: "Publicado em", value: "publicationYear" },
         { text: "Ações", value: "actions", sortable: false },
       ],
       items: [],

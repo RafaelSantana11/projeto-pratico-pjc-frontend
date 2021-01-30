@@ -18,7 +18,7 @@ const router = new VueRouter({
             name: "InsertAlbum]",
             path: "/albuns/cadastrar",
             component: AlbumForm,
-            props: { mod: "insert", title: "Cadastrar novo album" },
+            props: { mode: "insert", title: "Cadastrar novo album" },
         },
     ]
 })
