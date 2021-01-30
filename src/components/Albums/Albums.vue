@@ -214,7 +214,48 @@ export default {
     openUpdateScreen(albumId) {
       this.$router.push(`/albuns/editar/${albumId}`);
     },
-    deleteAlbum() {},
+    async deleteAlbum(albumId) {
+      try {
+        if (
+          !(await this.$root.$confirm(
+            "Atenção",
+            "Deseja realmente deletar o album selecionado?",
+            {
+              color: "primary",
+            }
+          ))
+        )
+          return;
+
+        this.loading = true;
+
+        await axios.delete(`${baseApiUrl}/albums/${albumId}`);
+
+        this.deleteAlbumFromDataTable(albumId);
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
+    deleteAlbumFromDataTable(album) {
+      const index = this.items.findIndex((item) => item.id == album);
+
+      if (index != -1) {
+        let copyOfItems = [...this.items];
+
+        copyOfItems.splice(index, 1);
+
+        this.items = copyOfItems;
+      }
+    },
   },
   created() {
     this.loadAlbuns();
