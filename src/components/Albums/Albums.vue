@@ -169,7 +169,9 @@ export default {
 
       this.loadAlbuns();
     },
-    openInsertScreen() {},
+    openInsertScreen() {
+      this.$router.push("/albuns/cadastrar");
+    },
     deleteAlbum() {},
   },
   created() {
