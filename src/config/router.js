@@ -15,11 +15,17 @@ const router = new VueRouter({
         { name: "Auth", path: '/login', component: Auth },
         { name: "Albums", path: "/albuns", component: Albums },
         {
-            name: "InsertAlbum]",
+            name: "InsertAlbum",
             path: "/albuns/cadastrar",
             component: AlbumForm,
             props: { mode: "insert", title: "Cadastrar novo album" },
         },
+        {
+            name: "UpdateAlbum",
+            path: "/albuns/editar/:id",
+            component: AlbumForm,
+            props: { mode: "update", title: "Editar dados de um álbum" },
+          },
     ]
 })
 

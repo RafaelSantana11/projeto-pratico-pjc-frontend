@@ -172,6 +172,9 @@ export default {
     openInsertScreen() {
       this.$router.push("/albuns/cadastrar");
     },
+    openUpdateScreen(albumId) {
+      this.$router.push(`/albuns/editar/${albumId}`);
+    },
     deleteAlbum() {},
   },
   created() {

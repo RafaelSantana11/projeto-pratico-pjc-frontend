@@ -73,6 +73,11 @@ export default {
       required: true,
     },
   },
+  computed: {
+    albumId() {
+      return this.$route.params.id;
+    },
+  },
   data() {
     return {
       loading: false,
@@ -103,8 +108,7 @@ export default {
 
         await axios.post(`${baseApiUrl}/albums`, this.form);
 
-        this.form = {}; //limpa o formulário
-        this.$router.go(-1); //redireciona para a página anterior
+        this.afterSave();
 
         this.loading = false;
       } catch (error) {
@@ -117,6 +121,30 @@ export default {
           color: "primary",
         });
       }
+    },
+    async update() {
+      try {
+        this.loading = true;
+
+        await axios.put(`${baseApiUrl}/albums/${this.albumId}`, this.form);
+
+        this.afterSave();
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
+    afterSave() {
+      this.form = {}; //limpa o formulário
+      this.$router.go(-1); //redireciona para a página anterior
     },
     validateForm() {
       const errors = [];
@@ -162,9 +190,38 @@ export default {
         });
       }
     },
+    async loadAlbumData() {
+      try {
+        this.loading = true;
+
+        const response = await axios.get(
+          `${baseApiUrl}/albums/${this.albumId}`
+        );
+
+        this.setAlbumData(response.data);
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
+    setAlbumData(data) {
+      this.form = { ...data };
+
+      this.loading = false;
+    },
   },
-  created() {
+  mounted() {
     this.loadArtists();
+
+    if (this.mode === "update") this.loadAlbumData();
   },
 };
 </script>
