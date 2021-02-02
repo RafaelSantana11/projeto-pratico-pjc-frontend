@@ -45,6 +45,19 @@
           ></v-select>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col>
+          <v-file-input
+            v-model="files"
+            ref="files"
+            accept="image/png, image/jpeg, image/bmp, image/jpg"
+            label="Adicionar mídia do álbum:"
+            show-size
+            multiple
+          ></v-file-input>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <v-card-actions>
@@ -87,26 +100,45 @@ export default {
         required: (value) => !!value || "Obrigatório.",
       },
       artistsOptions: [],
+      files: [],
     };
   },
   methods: {
     save() {
-      const errors = this.validateForm();
+      // const errors = this.validateForm();
 
-      if (errors.length) {
-        this.$root.$errorDialog(errors, {
-          width: "800",
-          color: "primary",
-        });
-      } else {
-        this[this.mode](); //chama a função de insert ou update conforme a propriedade mode
-      }
+      // if (errors.length) {
+      //   this.$root.$errorDialog(errors, {
+      //     width: "800",
+      //     color: "primary",
+      //   });
+      // } else {
+      //   this[this.mode](); //chama a função de insert ou update conforme a propriedade mode
+      // }
+
+      this[this.mode]();
     },
     async insert() {
       try {
         this.loading = true;
 
-        await axios.post(`${baseApiUrl}/albums`, this.form);
+        let formData = new FormData();
+
+        console.log(this.files);
+
+        for (let i = 0; i < this.files.length; i++) {
+          formData.append("file", this.files[i]);
+        }
+
+        const dataToSend = {...this.form}; //faz uma cópia do objeto do formulário
+
+        for (const key of Object.keys(dataToSend)) {
+          formData.append(key, dataToSend[key]);
+        }
+
+        await axios.post(`${baseApiUrl}/albums`, formData);
+
+        this.files = [];
 
         this.afterSave();
 
