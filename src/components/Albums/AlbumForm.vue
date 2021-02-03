@@ -75,7 +75,7 @@
               <v-btn title="Baixar" :href="img.url" fab small target="_blank"
                 ><v-icon>mdi-cloud-download</v-icon></v-btn
               >
-              <v-btn title="Remover" class="ml-2" fab small
+              <v-btn title="Remover" @click="deleteFile(img)" class="ml-2" fab small
                 ><v-icon>mdi-trash-can</v-icon></v-btn
               >
             </v-col>
@@ -272,6 +272,42 @@ export default {
       this.form = { ...data };
 
       this.loading = false;
+    },
+    async deleteFile(file) {
+      try {
+        if (
+          !(await this.$root.$confirm(
+            "Atenção",
+            "Deseja realmente deletar este arquivo do sistema?",
+            {
+              color: "primary",
+            }
+          ))
+        )
+          return;
+
+        this.loading = true;
+
+        await axios.delete(`${baseApiUrl}/albums/${this.albumId}/files`);
+
+        this.deleteFileLocally(file.id);
+
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+
+        const errorHandled = errorHandler.treatError(error);
+
+        await this.$root.$errorDialog(errorHandled, {
+          width: "800",
+          color: "primary",
+        });
+      }
+    },
+    deleteFileLocally(fileId) {
+      const index = this.form.AlbumMedia.findIndex((item) => item.id === fileId);
+
+      if (index !== -1) this.form.AlbumMedia.splice(index, 1);
     },
   },
   mounted() {
