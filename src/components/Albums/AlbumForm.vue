@@ -58,6 +58,30 @@
           ></v-file-input>
         </v-col>
       </v-row>
+
+      <v-row v-if="mode === 'update'">
+        <v-col>
+          <h2>Imagens do álbum:</h2>
+        </v-col>
+      </v-row>
+
+      <v-row class="mt-2" v-if="mode === 'update'">
+        <v-col v-bind:key="img.id" v-for="img in form.AlbumMedia">
+          <v-row>
+            <v-col class="mt-3" cols="12" sm="3">
+              <h3>{{ img.name }}</h3>
+            </v-col>
+            <v-col cols="12" sm="9">
+              <v-btn title="Baixar" :href="img.url" fab small target="_blank"
+                ><v-icon>mdi-cloud-download</v-icon></v-btn
+              >
+              <v-btn title="Remover" class="ml-2" fab small
+                ><v-icon>mdi-trash-can</v-icon></v-btn
+              >
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-card-text>
 
     <v-card-actions>
@@ -105,18 +129,16 @@ export default {
   },
   methods: {
     save() {
-      // const errors = this.validateForm();
+      const errors = this.validateForm();
 
-      // if (errors.length) {
-      //   this.$root.$errorDialog(errors, {
-      //     width: "800",
-      //     color: "primary",
-      //   });
-      // } else {
-      //   this[this.mode](); //chama a função de insert ou update conforme a propriedade mode
-      // }
-
-      this[this.mode]();
+      if (errors.length) {
+        this.$root.$errorDialog(errors, {
+          width: "800",
+          color: "primary",
+        });
+      } else {
+        this[this.mode](); //chama a função de insert ou update conforme a propriedade mode
+      }
     },
     async insert() {
       try {
@@ -130,7 +152,7 @@ export default {
           formData.append("file", this.files[i]);
         }
 
-        const dataToSend = {...this.form}; //faz uma cópia do objeto do formulário
+        const dataToSend = { ...this.form }; //faz uma cópia do objeto do formulário
 
         for (const key of Object.keys(dataToSend)) {
           formData.append(key, dataToSend[key]);
@@ -229,6 +251,8 @@ export default {
         const response = await axios.get(
           `${baseApiUrl}/albums/${this.albumId}`
         );
+
+        console.log(response.data);
 
         this.setAlbumData(response.data);
 
