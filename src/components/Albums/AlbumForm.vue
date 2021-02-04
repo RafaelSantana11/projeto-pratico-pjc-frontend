@@ -67,15 +67,22 @@
 
       <v-row class="mt-2" v-if="mode === 'update'">
         <v-col v-bind:key="img.id" v-for="img in form.AlbumMedia">
-          <v-row>
-            <v-col class="mt-3" cols="12" sm="3">
+          <v-row class="mt-3">
+            <v-col>
               <h3>{{ img.name }}</h3>
             </v-col>
-            <v-col cols="12" sm="9">
+          </v-row>
+          <v-row>
+            <v-col>
               <v-btn title="Baixar" :href="img.url" fab small target="_blank"
                 ><v-icon>mdi-cloud-download</v-icon></v-btn
               >
-              <v-btn title="Remover" @click="deleteFile(img)" class="ml-2" fab small
+              <v-btn
+                title="Remover"
+                @click="deleteFile(img)"
+                class="ml-2"
+                fab
+                small
                 ><v-icon>mdi-trash-can</v-icon></v-btn
               >
             </v-col>
@@ -146,8 +153,6 @@ export default {
 
         let formData = new FormData();
 
-        console.log(this.files);
-
         for (let i = 0; i < this.files.length; i++) {
           formData.append("file", this.files[i]);
         }
@@ -180,7 +185,19 @@ export default {
       try {
         this.loading = true;
 
-        await axios.put(`${baseApiUrl}/albums/${this.albumId}`, this.form);
+        let formData = new FormData();
+
+        for (let i = 0; i < this.files.length; i++) {
+          formData.append("file", this.files[i]);
+        }
+
+        const dataToSend = { ...this.form };
+
+        for (const key of Object.keys(dataToSend)) {
+          formData.append(key, dataToSend[key]);
+        }
+
+        await axios.put(`${baseApiUrl}/albums/${this.albumId}`, formData);
 
         this.afterSave();
 
@@ -305,7 +322,9 @@ export default {
       }
     },
     deleteFileLocally(fileId) {
-      const index = this.form.AlbumMedia.findIndex((item) => item.id === fileId);
+      const index = this.form.AlbumMedia.findIndex(
+        (item) => item.id === fileId
+      );
 
       if (index !== -1) this.form.AlbumMedia.splice(index, 1);
     },
