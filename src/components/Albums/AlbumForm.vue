@@ -269,8 +269,6 @@ export default {
           `${baseApiUrl}/albums/${this.albumId}`
         );
 
-        console.log(response.data);
-
         this.setAlbumData(response.data);
 
         this.loading = false;

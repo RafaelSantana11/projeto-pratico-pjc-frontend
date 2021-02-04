@@ -13,6 +13,20 @@
       </v-toolbar>
 
       <v-card-text>
+        <v-row class="ma-2 instructions">
+          <v-col>
+            <span>
+              - Para ver os dados do artista clique no primeiro botão da coluna
+              "Ações"
+            </span>
+            <br />
+            <span>
+              - Para acessar a mídia dos albuns, acesse a opção "Editar", na
+              coluna "Ações" (segundo botão)
+            </span>
+          </v-col>
+        </v-row>
+
         <v-data-table
           :headers="headers"
           :loading="loading"
@@ -22,7 +36,7 @@
           disable-pagination
         >
           <template v-slot:top>
-            <v-expansion-panels class="mb-5" :value="1">
+            <v-expansion-panels class="mb-5 mt-5" :value="1">
               <v-expansion-panel>
                 <v-expansion-panel-header> Filtros </v-expansion-panel-header>
                 <v-expansion-panel-content>
@@ -264,4 +278,8 @@ export default {
 </script>
 
 <style>
+.instructions {
+  border: 1px solid #afafaf;
+  border-radius: 5px;
+}
 </style>

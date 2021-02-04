@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
     <v-toolbar flat>
-      <v-card-title>Ver detalhes de um artista</v-card-title>
+      <v-card-title>Ver dados do artista</v-card-title>
 
       <v-spacer></v-spacer>
 
@@ -17,12 +17,6 @@
     <v-card-text>
       <v-row class="mt-3">
         <v-col>
-          <h3>Dados do artista </h3>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col>
           Nome: <b>{{ artist.name }}</b>
         </v-col>
       </v-row>
@@ -34,7 +28,7 @@
       </v-row>
 
       <v-row>
-        <v-col> Albuns do artista (no sistema): </v-col>
+        <v-col> Albuns cadastrados no sistema: </v-col>
       </v-row>
 
       <v-row>
