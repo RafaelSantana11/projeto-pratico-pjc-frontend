@@ -2,7 +2,7 @@
   <v-row align="center" justify="center">
     <v-card min-width="350">
       <v-toolbar dark flat>
-        <v-toolbar-title>Login</v-toolbar-title>
+        <v-toolbar-title>Login PJC-MT - Frontend</v-toolbar-title>
       </v-toolbar>
 
       <v-card-text>

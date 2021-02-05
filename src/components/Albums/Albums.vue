@@ -53,7 +53,7 @@
                     <v-row>
                       <v-col>
                         <v-text-field
-                          label="Buscar por cantor"
+                          label="Buscar por artista"
                           v-model="filters.artistName"
                         ></v-text-field>
                       </v-col>

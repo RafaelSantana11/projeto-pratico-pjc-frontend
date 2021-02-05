@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" app dark color="primary">
-      <Menu v-if="userData" />
+    <v-navigation-drawer v-if="userData" v-model="drawer" app dark color="primary">
+      <Menu />
     </v-navigation-drawer>
 
     <v-app-bar v-if="userData" app>
