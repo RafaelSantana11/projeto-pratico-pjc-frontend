@@ -8,9 +8,9 @@
 - Vaga: Analista Desenvolvedor
 
 ## Preview
-- ![image](https://i.imgur.com/Tpne0Gd.png) 
-- ![image](https://i.imgur.com/2CvnZyh.png)
-- ![image](https://i.imgur.com/cVAffxv.png)
+![image](https://i.imgur.com/Tpne0Gd.png =450x) 
+![image](https://i.imgur.com/2CvnZyh.png =450x)
+![image](https://i.imgur.com/cVAffxv.png =450x)
 
 ## Execução do projeto
 Siga os seguintes passos para a execução do projeto, sendo necessária a pré instalação do NPM, do Docker e Docker Compose
